@@ -5,19 +5,21 @@
  */
 package com.rsmarinoff.liquidsound.song;
 
+import com.google.common.io.ByteStreams;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -33,14 +35,17 @@ public class SongController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     Song uploadFileHandler(
-            @RequestPart(name = "file", required = true) MultipartFile file, HttpServletResponse response) throws IOException {
+            HttpServletRequest httpServletRequest) throws IOException {
+        InputStream stream = httpServletRequest.getInputStream();
+        // String str_request = IOUtils.toString(httpServletRequest.getInputStream());
+        byte[] attachement = ByteStreams.toByteArray(stream);
+        String filename = httpServletRequest.getHeader("filename");
+        String contentType = httpServletRequest.getHeader("Content-Type");
 
         Song song = new Song();
-
-        String name = file.getOriginalFilename();
-        song.setContentType(file.getContentType());
-        song.setName(name);
-        song.setContent(file.getBytes());
+        song.setContentType(contentType);
+        song.setName(filename);
+        song.setContent(attachement);
         return songRepository.save(song);
     }
 
@@ -51,9 +56,9 @@ public class SongController {
             HttpServletResponse response) throws IOException {
         Song song = songRepository.findOne(id);
         response.setContentType(song.getContentType());
-        response.setHeader("name", song.getName());
-        response.addHeader("Content-Disposition", "attachment; filename=\"" + song.getName() + "\"");
-        IOUtils.copy(new ByteArrayInputStream(song.getContent()), response.getOutputStream());
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + song.getName() + "\"");
+        response.setStatus(HttpServletResponse.SC_OK);
+        StreamUtils.copy(new ByteArrayInputStream(song.getContent()), response.getOutputStream());
         response.flushBuffer();
     }
 
