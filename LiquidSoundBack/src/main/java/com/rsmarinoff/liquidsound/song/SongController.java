@@ -28,9 +28,9 @@ public class SongController {
     @Autowired
     private SongRepository songRepository;
 
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    String uploadFileHandler(
+    Song uploadFileHandler(
             @RequestParam MultipartFile file) throws IOException {
 
         Song song = new Song();
@@ -39,16 +39,14 @@ public class SongController {
         song.setContentType(file.getContentType());
         song.setName(name);
         song.setContent(file.getBytes());
-        song = songRepository.save(song);
-        return "SONG SAVED WITH ID OF " + song.getId();
+        return songRepository.save(song);
     }
 
-    @RequestMapping(value = "/files/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/songs/{id}", method = RequestMethod.GET)
     public void getFile(
             @PathVariable("id") Long id,
             HttpServletResponse response) throws IOException {
         Song song = songRepository.findOne(id);
-        // response.setContentType("audio/mpeg");
         response.setContentType(song.getContentType());
         response.addHeader("Content-Disposition", "attachment; filename=\"" + song.getName() + "\"");
         IOUtils.copy(new ByteArrayInputStream(song.getContent()), response.getOutputStream());

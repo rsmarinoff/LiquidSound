@@ -5,6 +5,7 @@
  */
 package com.rsmarinoff.liquidsound.song;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Song implements Serializable {
     private String name;
     private String contentType;
 
+    @JsonIgnore
     @Column(name = "content")
     @Lob
     private byte[] content;
