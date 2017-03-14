@@ -29,16 +29,11 @@
         <li><button type="button" class="btn btn-warning navbar-btn" id="pause"><span class="glyphicon glyphicon-pause"></span></button></li>
         <li><button type="button" class="btn btn-danger navbar-btn" id="restart"><span class="glyphicon glyphicon-repeat"></span></button></li>
     </ul>
+    <p class="navbar-text" id="currentTime">00:00 / 00:00</p>
+    <p class="navbar-text" id="title">n/a</p>
+    <p class="navbar-text" id="status" style="color:red;">Loading</p>
+    <p class="navbar-text" id="source">n/a</p>
 </nav>
-
-
-<h2>Sound Information</h2>
-<div id="length">Duration:</div>
-<div id="source">Source:</div>
-<div id="status" style="color:red;">Status: Loading</div>
-<hr>
-<h2>Playing Information</h2>
-<div id="currentTime">0</div>
 
 <!--script src="https://code.jquery.com/jquery-1.12.0.min.js"></script-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -59,8 +54,7 @@
 <script>
     $(document).ready(function() {
         var audioElement = document.createElement('audio');
-        audioElement.setAttribute('src', 'http://localhost:8084/liquidsound/files/1');
-
+        audioElement.setAttribute('src', 'http://localhost:8084/liquidsound/songs/1');
         audioElement.addEventListener('ended', function() {
             this.play();
         }, false);
@@ -72,7 +66,7 @@
         });
 
         audioElement.addEventListener("timeupdate",function(){
-            $("#currentTime").text("Current second:" + audioElement.currentTime + " / " + audioElement.duration);
+            $("#currentTime").text(formatTime(audioElement.currentTime) + " / " + formatTime(audioElement.duration));
         });
 
         $('#play').click(function() {
@@ -89,6 +83,14 @@
             audioElement.currentTime = 0;
         });
     });
+
+    function formatTime(seconds) {
+        minutes = Math.floor(seconds / 60);
+        minutes = (minutes >= 10) ? minutes : "0" + minutes;
+        seconds = Math.floor(seconds % 60);
+        seconds = (seconds >= 10) ? seconds : "0" + seconds;
+        return minutes + ":" + seconds;
+    }
 </script>
 
 </body>

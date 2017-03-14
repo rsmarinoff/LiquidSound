@@ -48,6 +48,7 @@ public class SongController {
             HttpServletResponse response) throws IOException {
         Song song = songRepository.findOne(id);
         response.setContentType(song.getContentType());
+        response.setHeader("name", song.getName());
         response.addHeader("Content-Disposition", "attachment; filename=\"" + song.getName() + "\"");
         IOUtils.copy(new ByteArrayInputStream(song.getContent()), response.getOutputStream());
         response.flushBuffer();
