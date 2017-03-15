@@ -91,7 +91,8 @@
 
     $('#upload').click(function() {
         var data = new FormData();
-        data.append("file", $('#file-input[type=file]')[0].files[0]);
+        alert(document.getElementById("file-input").value);
+        data.append("file", $('input[type=file]')[0].files[0]);
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
 
