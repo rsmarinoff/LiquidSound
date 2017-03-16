@@ -35,8 +35,21 @@
     <p class="navbar-text" id="source">n/a</p>
 </nav>
 
-<button type="button" class="btn btn-success navbar-btn" id="upload"><span class="glyphicon glyphicon-play">Upload</span></button>
-<input type="file" id="file-input" />
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-6">
+            <button type="button" class="btn btn-primary" id="upload"><span class="glyphicon glyphicon-cloud-upload"></span></button>
+            <input type="file" id="file-input" />
+        </div>
+        <div class="col-sm-9 col-md-6" style="background-color:pink;">
+
+        </div>
+    </div>
+</div>
+
 
 
 <!--script src="https://code.jquery.com/jquery-1.12.0.min.js"></script-->
@@ -58,7 +71,7 @@
 <script>
     $(document).ready(function() {
         var audioElement = document.createElement('audio');
-        audioElement.setAttribute('src', 'http://localhost:8084/liquidsound/songs/1');
+        audioElement.setAttribute('src', 'http://localhost:8084/liquidsound/songs/3');
         audioElement.addEventListener('ended', function() {
             this.play();
         }, false);
@@ -90,9 +103,9 @@
     });
 
     $('#upload').click(function() {
-        var data = new FormData();
-        alert(document.getElementById("file-input").value);
-        data.append("file", $('input[type=file]')[0].files[0]);
+
+        var data = $('#file-input')[0].files[0];
+
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
 
@@ -103,8 +116,8 @@
         });
 
         xhr.open("POST", "http://localhost:8084/liquidsound/upload");
-        xhr.setRequestHeader("cache-control", "no-cache");
-        xhr.setRequestHeader("content-type", "multipart/form-data; boundary=???");
+        xhr.setRequestHeader("content-type", "audio/mpeg");
+        xhr.setRequestHeader("filename", "asd.mp3");
 
         xhr.send(data);
     });
