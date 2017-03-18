@@ -12,7 +12,11 @@
 
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
-
+    <!--script src="https://code.jquery.com/jquery-1.12.0.min.js"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -33,30 +37,155 @@
     <p class="navbar-text" id="title">n/a</p>
     <p class="navbar-text" id="status" style="color:red;">Loading</p>
     <p class="navbar-text" id="source">n/a</p>
+    <ul class="nav navbar-nav pull-right">
+        <li><button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
+    </ul>
 </nav>
 
 
-
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-6">
-            <button type="button" class="btn btn-primary" id="upload"><span class="glyphicon glyphicon-cloud-upload"></span></button>
-            <input type="file" id="file-input" />
-        </div>
-        <div class="col-sm-9 col-md-6" style="background-color:pink;">
-
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload a song</h4>
+                </div>
+                <div class="modal-body">
+                    <input type = text id="songTitle" />
+                    <p>Title</p>
+                    <input type = text id="artist" />
+                    <p>Artist</p>
+                    <input type = text id="genre" />
+                    <p>Genre</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="file" id="file-input" />
+                    <button type="button" class="btn btn-default" id="upload">Upload</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<div class="container text-center">
+    <div class="row">
+        <div class="col-sm-3 well">
+            <div class="well">
+                <p><a href="#">My Profile</a></p>
+                <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+            </div>
+            <div class="well">
+                <p><a href="#">Interests</a></p>
+                <p>
+                    <span class="label label-default">News</span>
+                    <span class="label label-primary">W3Schools</span>
+                    <span class="label label-success">Labels</span>
+                    <span class="label label-info">Football</span>
+                    <span class="label label-warning">Gaming</span>
+                    <span class="label label-danger">Friends</span>
+                </p>
+            </div>
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                <p><strong>Ey!</strong></p>
+                People are looking at your profile. Find out who.
+            </div>
+            <p><a href="#">Link</a></p>
+            <p><a href="#">Link</a></p>
+            <p><a href="#">Link</a></p>
+        </div>
+        <div class="col-sm-7">
 
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default text-left">
+                        <div class="panel-body">
+                            <p contenteditable="true">Status: Feeling Blue</p>
+                            <button type="button" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!--script src="https://code.jquery.com/jquery-1.12.0.min.js"></script-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
-<script src="js/plugins.js"></script>
-<script src="js/main.js"></script>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>John</p>
+                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Bo</p>
+                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Jane</p>
+                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="well">
+                        <p>Anja</p>
+                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="well">
+                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 well">
+            <div class="thumbnail">
+                <p>Upcoming Events:</p>
+                <img src="paris.jpg" alt="Paris" width="400" height="300">
+                <p><strong>Paris</strong></p>
+                <p>Fri. 27 November 2015</p>
+                <button class="btn btn-primary">Info</button>
+            </div>
+            <div class="well">
+                <p>ADS</p>
+            </div>
+            <div class="well">
+                <p>ADS</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid text-center">
+    <p>Footer Text</p>
+</footer>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
@@ -112,17 +241,25 @@
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 console.log(this.responseText);
+                var resp = JSON.parse(this.responseText);
+                alert(JSON.stringify(resp));
             }
         });
 
         xhr.open("POST", "http://localhost:8084/liquidsound/upload");
         xhr.setRequestHeader("content-type", "audio/mpeg");
-        xhr.setRequestHeader("filename", "asd.mp3");
-
+        xhr.setRequestHeader("filename", $('#file-input')[0].value);
+        xhr.setRequestHeader("name", $('#songTitle')[0].value);
+        xhr.setRequestHeader("artist", $('#artist')[0].value);
+        xhr.setRequestHeader("genre", $('#genre')[0].value);
         xhr.send(data);
+
     });
 
     function formatTime(seconds) {
+        if(seconds == null){
+            seconds = 0;
+        }
         minutes = Math.floor(seconds / 60);
         minutes = (minutes >= 10) ? minutes : "0" + minutes;
         seconds = Math.floor(seconds % 60);

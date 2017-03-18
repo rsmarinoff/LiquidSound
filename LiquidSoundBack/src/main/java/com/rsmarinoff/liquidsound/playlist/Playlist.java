@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rsmarinoff.liquidsound.song;
+package com.rsmarinoff.liquidsound.playlist;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
-import javax.persistence.Column;
+import com.rsmarinoff.liquidsound.song.Song;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,21 +23,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Song implements Serializable {
+public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String filename;
-    private String contentType;
     private String name;
-    private String artist;
-    private String genre;
 
-    @JsonIgnore
-    @Column(name = "content")
-    @Lob
-    private byte[] content;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Song> songs;
 
 }

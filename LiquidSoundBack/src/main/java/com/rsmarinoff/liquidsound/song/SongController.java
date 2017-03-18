@@ -37,14 +37,13 @@ public class SongController {
     Song uploadFileHandler(
             HttpServletRequest httpServletRequest) throws IOException {
         InputStream stream = httpServletRequest.getInputStream();
-        // String str_request = IOUtils.toString(httpServletRequest.getInputStream());
         byte[] attachement = ByteStreams.toByteArray(stream);
-        String filename = httpServletRequest.getHeader("filename");
-        String contentType = httpServletRequest.getHeader("Content-Type");
-
         Song song = new Song();
-        song.setContentType(contentType);
-        song.setName(filename);
+        song.setContentType(httpServletRequest.getHeader("Content-Type"));
+        song.setFilename(httpServletRequest.getHeader("filename"));
+        song.setName(httpServletRequest.getHeader("name"));
+        song.setArtist(httpServletRequest.getHeader("artist"));
+        song.setGenre(httpServletRequest.getHeader("genre"));
         song.setContent(attachement);
         return songRepository.save(song);
     }
