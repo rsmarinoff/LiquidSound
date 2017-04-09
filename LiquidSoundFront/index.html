@@ -27,20 +27,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <ul class="nav navbar-nav navbar-left">
-        <li><button type="button" class="btn btn-success navbar-btn" id="play"><span class="glyphicon glyphicon-play"></span></button></li>
-        <li><button type="button" class="btn btn-warning navbar-btn" id="pause"><span class="glyphicon glyphicon-pause"></span></button></li>
-        <li><button type="button" class="btn btn-danger navbar-btn" id="restart"><span class="glyphicon glyphicon-repeat"></span></button></li>
-    </ul>
-    <p class="navbar-text" id="currentTime">00:00 / 00:00</p>
-    <p class="navbar-text" id="title">n/a</p>
-    <p class="navbar-text" id="status" style="color:red;">Loading</p>
-    <p class="navbar-text" id="source">n/a</p>
-    <ul class="nav navbar-nav pull-right">
-        <li><button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
-    </ul>
-</nav>
 
 <div class="container">
     <!-- Modal -->
@@ -100,14 +86,22 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel panel-default text-left">
-                        <div class="panel-body">
-                            <p contenteditable="true">Status: Feeling Blue</p>
-                            <button type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
-                            </button>
-                        </div>
-                    </div>
+
+                        <nav class="navbar navbar-default">
+                            <ul class="nav navbar-nav navbar-left">
+                                <li><button type="button" class="btn btn-success navbar-btn" id="play"><span class="glyphicon glyphicon-play"></span></button></li>
+                                <li><button type="button" class="btn btn-warning navbar-btn" id="pause"><span class="glyphicon glyphicon-pause"></span></button></li>
+                                <li><button type="button" class="btn btn-danger navbar-btn" id="restart"><span class="glyphicon glyphicon-repeat"></span></button></li>
+                            </ul>
+                            <p class="navbar-text" id="currentTime">00:00 / 00:00</p>
+                            <p class="navbar-text" id="title">n/a</p>
+                            <p class="navbar-text" id="status" style="color:red;">Loading</p>
+                            <p class="navbar-text" id="source">n/a</p>
+                            <ul class="nav navbar-nav pull-right">
+                                <li><button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
+                            </ul>
+                        </nav>
+
                 </div>
             </div>
         </div>
@@ -248,11 +242,11 @@
             if (this.readyState === 4) {
                 console.log(this.responseText);
                 var resp = JSON.parse(this.responseText);
-                alert(JSON.stringify(resp));
+                alert("Upload of song with id ".concat(resp.id).concat(" finished."));
             }
         });
 
-        xhr.open("POST", "http://localhost:8084/liquidsound/upload");
+        xhr.open("POST", "http://localhost:8084/liquidsound/upload", false);
         xhr.setRequestHeader("content-type", "audio/mpeg");
         xhr.setRequestHeader("filename", $('#file-input')[0].value);
         xhr.setRequestHeader("name", $('#songTitle')[0].value);
