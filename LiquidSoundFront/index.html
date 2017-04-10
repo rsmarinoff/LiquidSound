@@ -42,7 +42,6 @@
     </ul>
 </nav>
 
-
 <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -97,7 +96,7 @@
             <p><a href="#">Link</a></p>
             <p><a href="#">Link</a></p>
         </div>
-        <div class="col-sm-7">
+        <div id = "playlist" class="col-sm-7">
 
             <div class="row">
                 <div class="col-sm-12">
@@ -108,59 +107,6 @@
                                 <span class="glyphicon glyphicon-thumbs-up"></span> Like
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>John</p>
-                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Bo</p>
-                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Jane</p>
-                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Anja</p>
-                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
                     </div>
                 </div>
             </div>
@@ -228,6 +174,66 @@
         $('#restart').click(function() {
             audioElement.currentTime = 0;
         });
+
+        var data = null;
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                var resp = JSON.parse(this.responseText);
+                var i;
+                for (i = 0; i < resp.length; i++) {
+
+                    var row = document.createElement("div");
+                    row.className = "row";
+                    var column = document.createElement("div");
+                    column.className = "col-sm-9";
+                    var well = document.createElement("div");
+                    well.onclick = function clicked(){
+                        audioElement.setAttribute('src', 'http://localhost:8084/liquidsound/songs/'.concat(this.id));
+                        audioElement.pause();
+                        audioElement.play();
+                    };
+                    well.id = resp[i].id;
+                    well.className = "well";
+                    column.appendChild(well);
+
+                    var paragraph = document.createElement("p");
+                    var text = document.createTextNode(resp[i].artist);
+                    text.appendData(" - ");
+                    text.appendData(resp[i].name);
+
+                    paragraph.appendChild(text);
+                    well.appendChild(paragraph);
+
+                    var smallColumn = document.createElement("div");
+                    smallColumn.className = "col-sm-3";
+                    var smallWell = document.createElement("div");
+                    smallWell.className = "well";
+                    smallColumn.appendChild(smallWell);
+
+                    var smallParagraph = document.createElement("p");
+                    var smallText = document.createTextNode(resp[i].genre);
+
+                    smallParagraph.appendChild(smallText);
+                    smallWell.appendChild(smallParagraph);
+
+                    row.appendChild(smallColumn);
+                    row.appendChild(column);
+
+                document.getElementById("playlist").appendChild(row);
+                }
+            }
+        });
+        xhr.open("GET", "http://localhost:8084/liquidsound/songs");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.send(data);
+
+
+
 
     });
 

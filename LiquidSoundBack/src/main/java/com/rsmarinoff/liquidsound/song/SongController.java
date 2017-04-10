@@ -9,6 +9,7 @@ import com.google.common.io.ByteStreams;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,13 @@ public class SongController {
         response.setStatus(HttpServletResponse.SC_OK);
         StreamUtils.copy(new ByteArrayInputStream(song.getContent()), response.getOutputStream());
         response.flushBuffer();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/songs", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Song> getAllSongsMeta() {
+        return songRepository.findAll();
     }
 
 }
