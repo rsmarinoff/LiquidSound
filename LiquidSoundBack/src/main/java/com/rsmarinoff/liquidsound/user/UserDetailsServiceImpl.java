@@ -6,13 +6,10 @@
 package com.rsmarinoff.liquidsound.user;
 
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -78,12 +75,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         repository.delete(id);
         return localUser;
     }
-
-    @PostConstruct
-    public void addDefaultUsers() {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        repository.save(new User("admin", encoder.encode("admin"), "ROLE_ADMIN", "ROLE_BLOGGER"));
-        repository.save(new User("user", encoder.encode("user"), "ROLE_USER"));
-    }
-
 }

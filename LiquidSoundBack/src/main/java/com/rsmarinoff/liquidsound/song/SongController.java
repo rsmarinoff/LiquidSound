@@ -6,14 +6,19 @@
 package com.rsmarinoff.liquidsound.song;
 
 import com.google.common.io.ByteStreams;
+import com.rsmarinoff.liquidsound.playlist.Playlist;
+import com.rsmarinoff.liquidsound.playlist.PlaylistRepository;
+import com.rsmarinoff.liquidsound.user.User;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +36,9 @@ public class SongController {
 
     @Autowired
     private SongRepository songRepository;
+
+    @Autowired
+    private PlaylistRepository playlistRepository;
 
     @CrossOrigin
     @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
@@ -67,6 +75,17 @@ public class SongController {
     public @ResponseBody
     List<Song> getAllSongsMeta() {
         return songRepository.findAll();
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/user/songs", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Song> getAllSongsMeta(@AuthenticationPrincipal User user) {
+        Playlist playlist = user.getPlaylist();
+        Hibernate.initialize(playlist);
+        List<Song> songs = playlist.getSongs();
+        Hibernate.initialize(songs);
+        return songs;
     }
 
 }

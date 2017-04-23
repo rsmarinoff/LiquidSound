@@ -41,7 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/").authenticated()
+                .antMatchers(HttpMethod.GET, "/").authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/songs").permitAll()
                 .antMatchers(HttpMethod.GET, "/songs").permitAll()
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
@@ -49,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/error").permitAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().disable();
+        http.httpBasic();
     }
 
 }

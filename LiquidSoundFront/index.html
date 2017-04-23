@@ -25,6 +25,8 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="css/HoldOn.min.css" rel="stylesheet">
+    <script src="js/HoldOn.min.js"></script>
 </head>
 <body>
 
@@ -55,23 +57,15 @@
     </div>
 </div>
 
-<div class="container text-center">
+<div class="container text-center" style="margin-top:1em;">
     <div class="row">
         <div class="col-sm-3 well">
             <div class="well">
-                <p><a href="#">My Profile</a></p>
-                <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-            <div class="well">
-                <p><a href="#">Interests</a></p>
-                <p>
-                    <span class="label label-default">News</span>
-                    <span class="label label-primary">W3Schools</span>
-                    <span class="label label-success">Labels</span>
-                    <span class="label label-info">Football</span>
-                    <span class="label label-warning">Gaming</span>
-                    <span class="label label-danger">Friends</span>
-                </p>
+                <input type = text id="userName" />
+                <p>Username</p>
+                <input type = text id="password" />
+                <p>Password</p>
+                <button type="button" class="btn btn-default" id="login">Log In</button>
             </div>
             <div class="alert alert-success fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -86,9 +80,8 @@
 
             <div class="row">
                 <div class="col-sm-12">
-
                         <nav class="navbar navbar-default">
-                            <ul class="nav navbar-nav navbar-left">
+                            <ul class="nav navbar-nav navbar-left" style="margin-left: 1em;">
                                 <li><button type="button" class="btn btn-success navbar-btn" id="play"><span class="glyphicon glyphicon-play"></span></button></li>
                                 <li><button type="button" class="btn btn-warning navbar-btn" id="pause"><span class="glyphicon glyphicon-pause"></span></button></li>
                                 <li><button type="button" class="btn btn-danger navbar-btn" id="restart"><span class="glyphicon glyphicon-repeat"></span></button></li>
@@ -97,11 +90,10 @@
                             <p class="navbar-text" id="title">n/a</p>
                             <p class="navbar-text" id="status" style="color:red;">Loading</p>
                             <p class="navbar-text" id="source">n/a</p>
-                            <ul class="nav navbar-nav pull-right">
+                            <ul class="nav navbar-nav pull-right" style="margin-right: 1em;">
                                 <li><button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-cloud-upload"></span></button></li>
                             </ul>
                         </nav>
-
                 </div>
             </div>
         </div>
@@ -149,6 +141,7 @@
             $("#length").text("Duration:" + audioElement.duration + " seconds");
             $("#source").text("Source:" + audioElement.src);
             $("#status").text("Status: Ready to play").css("color","green");
+            $("#currentTime").text(formatTime(audioElement.currentTime) + " / " + formatTime(audioElement.duration));
         });
 
         audioElement.addEventListener("timeupdate",function(){
@@ -168,7 +161,10 @@
         $('#restart').click(function() {
             audioElement.currentTime = 0;
         });
+        getSongs(audioElement);
+    });
 
+    function getSongs(audioElement){
         var data = null;
 
         var xhr = new XMLHttpRequest();
@@ -218,21 +214,22 @@
                     row.appendChild(smallColumn);
                     row.appendChild(column);
 
-                document.getElementById("playlist").appendChild(row);
+                    document.getElementById("playlist").appendChild(row);
                 }
             }
         });
         xhr.open("GET", "http://localhost:8084/liquidsound/songs");
         xhr.setRequestHeader("cache-control", "no-cache");
         xhr.send(data);
-
-
-
-
-    });
+    }
 
     $('#upload').click(function() {
-
+        var options = {
+            theme:"sk-bounce",
+            message:' Processing your request... Please, remain calm.... ',
+            textColor:"white"
+        };
+        HoldOn.open(options);
         var data = $('#file-input')[0].files[0];
 
         var xhr = new XMLHttpRequest();
@@ -242,25 +239,42 @@
             if (this.readyState === 4) {
                 console.log(this.responseText);
                 var resp = JSON.parse(this.responseText);
-                alert("Upload of song with id ".concat(resp.id).concat(" finished."));
+                $('#myModal').modal('toggle');
+                location.reload();
+                HoldOn.close();
             }
         });
 
-        xhr.open("POST", "http://localhost:8084/liquidsound/upload", false);
+        xhr.open("POST", "http://localhost:8084/liquidsound/upload");
         xhr.setRequestHeader("content-type", "audio/mpeg");
         xhr.setRequestHeader("filename", $('#file-input')[0].value);
         xhr.setRequestHeader("name", $('#songTitle')[0].value);
         xhr.setRequestHeader("artist", $('#artist')[0].value);
         xhr.setRequestHeader("genre", $('#genre')[0].value);
         xhr.send(data);
-
     });
 
+    $('#login').click(function() {
+        var data = null;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                alert("logged in")
+            }
+        });
+        xhr.open("GET", "http://localhost:8084/liquidsound/");
+        xhr.setRequestHeader("authorization", "Basic " + btoa("admin:admin"));
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.send(data);
+    });
     function formatTime(seconds) {
         if(seconds == null){
             seconds = 0;
         }
-        minutes = Math.floor(seconds / 60);
+        var minutes = Math.floor(seconds / 60);
         minutes = (minutes >= 10) ? minutes : "0" + minutes;
         seconds = Math.floor(seconds % 60);
         seconds = (seconds >= 10) ? seconds : "0" + seconds;

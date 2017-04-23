@@ -11,3 +11,10 @@ insert into playlist_songs(playlist_id,songs_id) values (1,3);
 insert into playlist_songs(playlist_id,songs_id) values (1,4);
 insert into playlist_songs(playlist_id,songs_id) values (1,5);
 insert into playlist_songs(playlist_id,songs_id) values (1,6);
+
+insert into user(id,username,password) values (1, 'admin', '$2a$10$aDEa3V9.q/9JnLESEkOgHuEoGn0N1gqklJ4jsftdGG5/bsAOApr7m');
+insert into user(id, username, password, playlist_id) values (2, 'user', '$2a$10$NZkYalRMPhqjtJPN7WBIxOtCVYbTPUj6XtQMiyQA4mINFuYJ6fCAC', 1);
+insert into role(id, user_role) values (1, 'ROLE_ADMIN');
+insert into role(id, user_role) values (2, 'ROLE_USER');
+insert into user_roles(user_id, roles_id) values (1,1);
+insert into user_roles(user_id, roles_id) values (2,2);

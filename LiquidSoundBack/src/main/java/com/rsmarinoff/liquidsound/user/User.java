@@ -5,6 +5,7 @@
  */
 package com.rsmarinoff.liquidsound.user;
 
+import com.rsmarinoff.liquidsound.playlist.Playlist;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -31,6 +33,9 @@ public class User implements UserDetails {
 
     private String username;
     private String password;
+
+    @OneToOne
+    private Playlist playlist;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private final List<Role> roles = new ArrayList<>();
@@ -97,6 +102,20 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    /**
+     * @return the playlist
+     */
+    public Playlist getPlaylist() {
+        return playlist;
+    }
+
+    /**
+     * @param playlist the playlist to set
+     */
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
     }
 
 }

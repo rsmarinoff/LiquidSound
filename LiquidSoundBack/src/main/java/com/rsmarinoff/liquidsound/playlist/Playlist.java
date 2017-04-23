@@ -8,7 +8,6 @@ package com.rsmarinoff.liquidsound.playlist;
 import com.rsmarinoff.liquidsound.song.Song;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +30,10 @@ public class Playlist {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     private List<Song> songs;
 
+    public void addSong(Song song) {
+        songs.add(song);
+    }
 }
